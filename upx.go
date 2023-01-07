@@ -1,7 +1,6 @@
 package goupx
 
 import (
-	"bufio"
 	"fmt"
 	"os/exec"
 )
@@ -93,7 +92,7 @@ type UPX struct {
 	args []string
 
 	// stderr, stdout keep track of outputs
-	stderr, stdout bufio.Scanner
+	//stderr, stdout bufio.Scanner
 
 	// exit status code
 	exitStatus int
