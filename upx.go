@@ -152,9 +152,11 @@ func (upx *UPX) Compress(file string, intensity int, options Options) (bool, err
 	return true, nil
 }
 
-//func (upx *UPX) Decompress(file string, options Options) error {}
-//
-//func (upx *UPX) ListCompressedFile(file string, options Options) error {}
-//
-//func (upx *UPX) TestCompressedFile(file string, options Options) error {}
-//
+// TODO
+//func (upx *UPX) Decompress(file string, options Options) (bool, error) {}
+
+// TODO
+//func (upx *UPX) ListCompressedFile(file string, options Options) ([]string, error) {}
+
+// TODO
+//func (upx *UPX) TestCompressedFile(file string, options Options) (bool, error) {}
