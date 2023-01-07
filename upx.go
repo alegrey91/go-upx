@@ -130,7 +130,7 @@ func (upx *UPX) run(file string, cmdArgs []string) error {
 }
 
 // Compress execute a compression with upx.
-// It return an error message in case of file, nil otherwhise.
+// It return false with an error message in case of fail, true with nil otherwhise.
 func (upx *UPX) Compress(file string, intensity int, options Options) (bool, error) {
 	var command []string
 
@@ -148,12 +148,22 @@ func (upx *UPX) Compress(file string, intensity int, options Options) (bool, err
 	if err != nil {
 		return false, fmt.Errorf("%v", err)
 	}
-
 	return true, nil
 }
 
-// TODO
-//func (upx *UPX) Decompress(file string, options Options) (bool, error) {}
+// Decompress execute a decompression with upx.
+// It return false with an error message in case of fail, true with nil otherwhise.
+func (upx *UPX) Decompress(file string, options Options) (bool, error) {
+    var command []string
+    command = append(command, "-d")
+	command = append(options.generateCommandArgs(), command[0])
+
+    err := upx.run(file, command)
+	if err != nil {
+		return false, fmt.Errorf("%v", err)
+	}
+	return true, nil
+}
 
 // TODO
 //func (upx *UPX) ListCompressedFile(file string, options Options) ([]string, error) {}

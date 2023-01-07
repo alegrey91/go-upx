@@ -15,7 +15,7 @@ func TestCompress(t *testing.T) {
 		expectedResult bool
 	}{
 		{
-			"samples/sample",
+			"samples/true",
 			0,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -31,7 +31,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -47,7 +47,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			19,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -63,7 +63,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -79,7 +79,7 @@ func TestCompress(t *testing.T) {
 			false,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -95,7 +95,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -111,7 +111,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/tmp/file",
@@ -127,7 +127,7 @@ func TestCompress(t *testing.T) {
 			true,
 		},
 		{
-			"samples/sample",
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "/this/path/does/not/exists",
@@ -158,8 +158,8 @@ func TestCompress(t *testing.T) {
 			},
 			false,
 		},
-		{
-			"samples/sample",
+		{ // this must be the latest test (will override real binary)
+			"samples/true",
 			1,
 			goupx.Options{
 				Output:  "",
@@ -181,6 +181,79 @@ func TestCompress(t *testing.T) {
 	for id, tt := range testCases {
 		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
 			testResult, testErr := upx.Compress(tt.file, tt.intensity, tt.options)
+			t.Logf("args: %s", upx.GetArgs())
+			if testErr != nil {
+				t.Logf("%v", testErr)
+			}
+
+			if testResult != tt.expectedResult {
+				t.Fatal("Test failed")
+			}
+		})
+	}
+}
+
+func TestDecompress(t *testing.T) {
+
+	testCases := []struct {
+		file           string
+		options        goupx.Options
+		expectedResult bool
+	}{
+		{
+			"samples/true_compressed",
+			goupx.Options{
+				Output:  "/tmp/file",
+				Force:   true,
+				Verbose: false,
+				BackupOpt: goupx.BackupOptions{
+					Backup: false,
+				},
+			},
+			true,
+		},
+		{
+			"samples/true_compressed",
+			goupx.Options{
+				Output:  "/tmp/file",
+				Force:   false,
+				Verbose: false,
+				BackupOpt: goupx.BackupOptions{
+					Backup: false,
+				},
+			},
+			false,
+		},
+		{
+			"samples/true_compressed",
+			goupx.Options{
+				Output:  "/tmp/file",
+				Force:   true,
+				Verbose: false,
+				BackupOpt: goupx.BackupOptions{
+					Backup: true,
+				},
+			},
+			true,
+		},
+		{ // this must be the latest test (will override real binary)
+			"samples/true_compressed",
+			goupx.Options{
+				Output:  "",
+				Force:   true,
+				Verbose: false,
+				BackupOpt: goupx.BackupOptions{
+					Backup: false,
+				},
+			},
+			true,
+		},
+	}
+	upx := goupx.NewUPX()
+
+	for id, tt := range testCases {
+		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
+			testResult, testErr := upx.Decompress(tt.file, tt.options)
 			t.Logf("args: %s", upx.GetArgs())
 			if testErr != nil {
 				t.Logf("%v", testErr)
