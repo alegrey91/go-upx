@@ -164,6 +164,8 @@ func (upx *UPX) Decompress(file string, options Options) (bool, error) {
 	return true, nil
 }
 
+// TestCompressedFile execute test with upx.
+// It return false with an error message in case it fail, true with nil otherwise.
 func (upx *UPX) TestCompressedFile(file string) (bool, error) {
     var command []string
     command = append(command, "-t")
