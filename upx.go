@@ -164,8 +164,16 @@ func (upx *UPX) Decompress(file string, options Options) (bool, error) {
 	return true, nil
 }
 
-// TODO
-//func (upx *UPX) ListCompressedFile(file string, options Options) ([]string, error) {}
+func (upx *UPX) TestCompressedFile(file string) (bool, error) {
+    var command []string
+    command = append(command, "-t")
+
+    err := upx.run(file, command)
+	if upx.exitStatus != 0 {
+		return false, fmt.Errorf("%v", err)
+	}
+    return true, nil
+}
 
 // TODO
-//func (upx *UPX) TestCompressedFile(file string, options Options) (bool, error) {}
+//func (upx *UPX) ListCompressedFile(file string, options Options) ([]string, error) {}
