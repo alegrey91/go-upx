@@ -22,4 +22,11 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	fmt.Println(upx.GetArgs())
+	fmt.Println(upx.CmdExecution.GetOriginalFileSize())
+	fmt.Println(upx.CmdExecution.GetCompressedFileSize())
+	fmt.Println(upx.CmdExecution.GetRatio())
+	fmt.Println(upx.CmdExecution.GetFormat())
+	fmt.Println(upx.CmdExecution.GetName())
 }
