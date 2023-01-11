@@ -4,7 +4,7 @@
 
 ![Test](https://github.com/alegrey91/go-upx/actions/workflows/test.yml/badge.svg)
 
-**go-upx** is a Go binding for `upx` utility.
+**go-upx** is a command-line wrapper for `upx` utility.
 
 ## What is UPX
 
