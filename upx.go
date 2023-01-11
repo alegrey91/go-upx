@@ -2,6 +2,7 @@ package goupx
 
 import (
 	"fmt"
+	"io"
 	"os/exec"
 )
 
@@ -83,6 +84,20 @@ func (opts *Options) generateCommandArgs() []string {
 	return commandOptions
 }
 
+type CmdExecution struct {
+	// stderr, stdout keep track of outputs
+	stdout, stderr []byte
+
+	// parsed output
+	parsedOutput
+
+	// parsed error
+	parsedError
+
+	// exit status code
+	exitStatus int
+}
+
 // UPX describe the execution of upx utility.
 type UPX struct {
 	// Binary file for upx (it is visible in case you have different binary name)
@@ -91,11 +106,8 @@ type UPX struct {
 	// Args contains the command arguments
 	args []string
 
-	// stderr, stdout keep track of outputs
-	//stderr, stdout bufio.Scanner
-
-	// exit status code
-	exitStatus int
+	// UPX command execution results
+	CmdExecution
 }
 
 func NewUPX() *UPX {
@@ -120,7 +132,30 @@ func (upx *UPX) run(file string, cmdArgs []string) error {
 	upx.args = cmdArgs
 
 	cmd := exec.Command(binPath, cmdArgs...)
-	if err := cmd.Run(); err != nil {
+
+	// preparing pipe to collect stderr
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("%v", err)
+	}
+
+	// preparing pipe to collect stdout
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return fmt.Errorf("%v", err)
+	}
+
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("%v", err)
+	}
+
+	// collect stderr
+	upx.stderr, _ = io.ReadAll(stderr)
+
+	// collect stdout
+	upx.stdout, _ = io.ReadAll(stdout)
+
+	if err := cmd.Wait(); err != nil {
 		upx.exitStatus = cmd.ProcessState.ExitCode()
 		return fmt.Errorf("%v", err)
 	}
@@ -145,36 +180,41 @@ func (upx *UPX) Compress(file string, intensity int, options Options) (bool, err
 
 	err := upx.run(file, command)
 	if err != nil {
-		return false, fmt.Errorf("%v", err)
+		upx.parsedError = parseError(upx.stderr)
+		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
 	}
+	upx.parsedOutput = parseOutput(upx.stdout)
 	return true, nil
 }
 
 // Decompress execute a decompression with upx.
 // It return false with an error message in case of fail, true with nil otherwhise.
 func (upx *UPX) Decompress(file string, options Options) (bool, error) {
-    var command []string
-    command = append(command, "-d")
+	var command []string
+	command = append(command, "-d")
 	command = append(options.generateCommandArgs(), command[0])
 
-    err := upx.run(file, command)
+	err := upx.run(file, command)
 	if err != nil {
-		return false, fmt.Errorf("%v", err)
+		upx.parsedError = parseError(upx.stderr)
+		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
 	}
+	upx.parsedOutput = parseOutput(upx.stdout)
 	return true, nil
 }
 
 // TestCompressedFile execute test with upx.
 // It return false with an error message in case it fail, true with nil otherwise.
 func (upx *UPX) TestCompressedFile(file string) (bool, error) {
-    var command []string
-    command = append(command, "-t")
+	var command []string
+	command = append(command, "-t")
 
-    err := upx.run(file, command)
-	if upx.exitStatus != 0 {
-		return false, fmt.Errorf("%v", err)
+	err := upx.run(file, command)
+	if err != nil {
+		upx.parsedError = parseError(upx.stderr)
+		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
 	}
-    return true, nil
+	return true, nil
 }
 
 // TODO
