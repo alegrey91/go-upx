@@ -257,3 +257,31 @@ func TestTestCompressedFile(t *testing.T) {
 		})
 	}
 }
+
+func TestListCompressedFile(t *testing.T) {
+
+	testCases := []struct {
+		file           string
+		expectedResult bool
+	}{
+		{
+			"samples/true_compressed",
+			true,
+		},
+		{
+			"samples/true",
+			true,
+		},
+	}
+	upx := goupx.NewUPX()
+
+	for id, tt := range testCases {
+		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
+			testResult, testErr := upx.TestCompressedFile(tt.file)
+			t.Logf("args: %s", upx.GetArgs())
+			if testErr != nil && testResult != tt.expectedResult {
+				t.Fatalf("%v", testErr)
+			}
+		})
+	}
+}
