@@ -270,7 +270,7 @@ func TestListCompressedFile(t *testing.T) {
 		},
 		{
 			"samples/true",
-			true,
+			false,
 		},
 	}
 	upx := goupx.NewUPX()
