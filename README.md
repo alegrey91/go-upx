@@ -2,7 +2,7 @@
 
 ![go-upx](go-upx.jpg)
 
-![Test](https://github.com/alegrey91/go-upx/actions/workflows/test.yml/badge.svg)
+![Test](https://github.com/alegrey91/go-upx/actions/workflows/test.yml/badge.svg)  [![Go Reference](https://pkg.go.dev/badge/github.com/alegrey91/go-upx.svg)](https://pkg.go.dev/github.com/alegrey91/go-upx)
 
 **go-upx** is a command-line wrapper for `upx` utility.
 
