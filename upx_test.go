@@ -28,7 +28,7 @@ func TestCompress(t *testing.T) {
 					Backup: false,
 				},
 			},
-			true,
+			false,
 		},
 		{
 			"samples/true",
