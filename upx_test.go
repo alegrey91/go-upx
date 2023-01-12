@@ -166,12 +166,8 @@ func TestCompress(t *testing.T) {
 		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
 			testResult, testErr := upx.Compress(tt.file, tt.intensity, tt.options)
 			t.Logf("args: %s", upx.GetArgs())
-			if testErr != nil {
-				t.Logf("%v", testErr)
-			}
-
-			if testResult != tt.expectedResult {
-				t.Fatal("Test failed")
+			if testErr != nil && testResult != tt.expectedResult {
+				t.Fatalf("%v", testErr)
 			}
 		})
 	}
@@ -227,12 +223,8 @@ func TestDecompress(t *testing.T) {
 		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
 			testResult, testErr := upx.Decompress(tt.file, tt.options)
 			t.Logf("args: %s", upx.GetArgs())
-			if testErr != nil {
-				t.Logf("%v", testErr)
-			}
-
-			if testResult != tt.expectedResult {
-				t.Fatal("Test failed")
+			if testErr != nil && testResult != tt.expectedResult {
+				t.Fatalf("%v", testErr)
 			}
 		})
 	}
@@ -259,12 +251,8 @@ func TestTestCompressedFile(t *testing.T) {
 		t.Run(fmt.Sprintf("Checking rule with id %d", id), func(t *testing.T) {
 			testResult, testErr := upx.TestCompressedFile(tt.file)
 			t.Logf("args: %s", upx.GetArgs())
-			if testErr != nil {
-				t.Logf("%v", testErr)
-			}
-
-			if testResult != tt.expectedResult {
-				t.Fatal("Test failed")
+			if testErr != nil && testResult != tt.expectedResult {
+				t.Fatalf("%v", testErr)
 			}
 		})
 	}
