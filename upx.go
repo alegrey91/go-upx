@@ -133,6 +133,7 @@ func (upx *UPX) run(file string, cmdArgs []string) error {
 	cmdArgs = append(cmdArgs, file)
 	upx.args = cmdArgs
 
+	// #nosec
 	cmd := exec.Command(binPath, cmdArgs...)
 
 	// preparing pipe to collect stderr
