@@ -171,13 +171,6 @@ func (upx *UPX) run(file string, cmdArgs []string) error {
 func (upx *UPX) Compress(file string, intensity int, options Options) (bool, error) {
 	var command []string
 
-	// input sanitizing
-	if intensity < 1 {
-		intensity = 1
-	}
-	if intensity > 9 {
-		intensity = 9
-	}
 	command = append(command, fmt.Sprint("-", intensity))
 	command = append(options.generateCommandArgs(), command[0])
 
