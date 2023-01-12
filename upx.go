@@ -84,6 +84,8 @@ func (opts *Options) generateCommandArgs() []string {
 	return commandOptions
 }
 
+// CmdExecution describe the command after its execution.
+// It collects info about its stderr/stdout, exit status, etc.
 type CmdExecution struct {
 	// stderr, stdout keep track of outputs
 	stdout, stderr []byte
