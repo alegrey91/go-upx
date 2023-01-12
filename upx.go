@@ -184,7 +184,7 @@ func (upx *UPX) Compress(file string, intensity int, options Options) (bool, err
 	err := upx.run(file, command)
 	if err != nil {
 		upx.parsedError = parseError(upx.stderr)
-		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
+		return false, fmt.Errorf("error compress: %v", upx.parsedError.GetErrorMessage())
 	}
 	upx.parsedOutput = parseOutput(upx.stdout)
 	return true, nil
@@ -200,7 +200,7 @@ func (upx *UPX) Decompress(file string, options Options) (bool, error) {
 	err := upx.run(file, command)
 	if err != nil {
 		upx.parsedError = parseError(upx.stderr)
-		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
+		return false, fmt.Errorf("error decompress: %v", upx.parsedError.GetErrorMessage())
 	}
 	upx.parsedOutput = parseOutput(upx.stdout)
 	return true, nil
@@ -211,14 +211,26 @@ func (upx *UPX) Decompress(file string, options Options) (bool, error) {
 func (upx *UPX) TestCompressedFile(file string) (bool, error) {
 	var command []string
 	command = append(command, "-t")
+	// we don't need additional args in this case
 
 	err := upx.run(file, command)
 	if err != nil {
 		upx.parsedError = parseError(upx.stderr)
-		return false, fmt.Errorf("%v", upx.parsedError.GetErrorMessage())
+		return false, fmt.Errorf("error test compressed file: %v", upx.parsedError.GetErrorMessage())
 	}
 	return true, nil
 }
 
-// TODO
-//func (upx *UPX) ListCompressedFile(file string, options Options) ([]string, error) {}
+func (upx *UPX) ListCompressedFile(file string, options Options) (bool, error) {
+	var command []string
+	command = append(command, "-l")
+	// we don't need additional args in this case
+
+	err := upx.run(file, command)
+	if err != nil {
+		upx.parsedError = parseError(upx.stderr)
+		return false, fmt.Errorf("error list compressed file: %v", upx.parsedError.GetErrorMessage())
+	}
+	upx.parsedOutput = parseOutput(upx.stdout)
+	return true, nil
+}
