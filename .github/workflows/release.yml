@@ -1,0 +1,17 @@
+name: release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  go-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # ratchet:actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Publish package on pkg.go.dev
+        env:
+          GOPROXY: "proxy.golang.org"
+        run: |
+          go list -m github.com/alegrey91/go-upx@${{github.ref_name}}
