@@ -4,7 +4,7 @@
 
 ![Test](https://github.com/alegrey91/go-upx/actions/workflows/test.yml/badge.svg)  [![Go Reference](https://pkg.go.dev/badge/github.com/alegrey91/go-upx.svg)](https://pkg.go.dev/github.com/alegrey91/go-upx)
 
-**go-upx** is a command-line wrapper for `upx` utility.
+**go-upx** is a command-line wrapper library for `upx` utility.
 
 For package reference, visit [https://pkg.go.dev/github.com/alegrey91/go-upx](https://pkg.go.dev/github.com/alegrey91/go-upx).
 
