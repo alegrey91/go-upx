@@ -112,9 +112,17 @@ type UPX struct {
 	CmdExecution
 }
 
+// NewUPX return a new instance of upx object.
 func NewUPX() *UPX {
 	return &UPX{
 		Binary: "upx",
+	}
+}
+
+// NewUPXWithBinary return a new instance of upx object, not in PATH.
+func NewUPXWithBinary(binPath string) *UPX {
+	return &UPX{
+		Binary: binPath,
 	}
 }
 
