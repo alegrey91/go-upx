@@ -12,6 +12,10 @@ For package reference, visit [https://pkg.go.dev/github.com/alegrey91/go-upx](ht
 
 UPX is a free, secure, portable, extendable, high-performance executable packer for several executable formats. More info at [https://upx.github.io/](https://upx.github.io/).
 
+## Why
+
+The idea was to create a nice interface for this utility in my favorite programming language. So you can automate tasks in a bigger project that makes use of the utility.
+
 ## Install
 
 To install the module, run the following command:
